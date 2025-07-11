@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array</title>
+    
+
+</head>
+<body>
+    <h1>Arrays</h1>
+    <p>Mira la consola de Javascript</p>
+    <div id="resultado"></div>
+    <script>
+       let frutas = ["Manzana", "Banana"];
+       console.log(frutas.length);// 2
+       const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio','Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+       textoResultado= '<select id="meses">';
+       // Recorrer un array
+        for(let i = 0; i < meses.length; i++ )
+        {
+                console.log( `meses[${i}] = ${meses[i]} ` )
+                textoResultado += `<option value="${i}">${meses[i]}</option>`;
+        }
+        textoResultado += '</select>';
+        console.log(textoResultado);
+       
+        ahora = new Date();
+        console.log(`🕧 : ${ahora} `)
+        anio = ahora.getFullYear();
+        console.log(anio);
+        // poner un select para seleccionar el año de nacimiento  de todas las personas entre 18 y 130
+        const limiteSuperior = anio - 18;
+        const limiteInferior = anio -100;
+         textoResultado += '<select id="anios">';
+       // Recorrer un array
+        for(let i = limiteSuperior; i >= limiteInferior; i-- )
+        {       
+                textoResultado += `<option value="${i}">${i}</option>`;
+        }
+        textoResultado += '</select>';
+
+        document.getElementById('resultado').innerHTML = textoResultado;
+    </script>
+</body>
+</html>

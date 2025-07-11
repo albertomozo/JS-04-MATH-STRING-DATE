@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Notas - Múltiples Alumnos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .notas {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        
+        .notas th, .notas td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .notas th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .alumno-nombre {
+            background-color: #e8f5e8;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        .materias {
+            background-color: #f9f9f9;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        .final {
+            background-color: #ffeb3b;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .promedio-alto {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .promedio-medio {
+            background-color: #FF9800;
+            color: white;
+        }
+        
+        .promedio-bajo {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .estadisticas {
+            background-color: #2196F3;
+            color: white;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .estadisticas h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Sistema de Calificaciones</h1>
+        <div id="resultado"></div>
+        <div id="estadisticas"></div>
+    </div>
+
+    <script>
+        // Datos de múltiples alumnos
+        let alumnos = [
+            {
+                nombre: "Ana García",
+                calificaciones: [8, 9, 7, 5, 8]
+            },
+            {
+                nombre: "Carlos López",
+                calificaciones: [9, 8, 9, 7, 8]
+            },
+            {
+                nombre: "María Rodríguez",
+                calificaciones: [6, 7, 5, 6, 7]
+            },
+            {
+                nombre: "Pedro Martínez",
+                calificaciones: [10, 9, 8, 9, 10]
+            },
+            {
+                nombre: "Laura Sánchez",
+                calificaciones: [7, 8, 6, 7, 8]
+            }
+        ];
+
+        let materias = ['HTML', 'CSS', 'JavaScript', 'SEO', 'Sass'];
+
+        function calcularPromedio(calificaciones) {
+            let suma = calificaciones.reduce((acc, nota) => acc + nota, 0);
+            return (suma / calificaciones.length).toFixed(2);
+        }
+
+        function getClasePromedio(promedio) {
+            if (promedio >= 8.5) return 'promedio-alto';
+            if (promedio >= 7) return 'promedio-medio';
+            return 'promedio-bajo';
+        }
+
+        function mostrarNotas() {
+            console.log('=== SISTEMA DE CALIFICACIONES ===');
+            
+            let resultado = '<table class="notas">';
+            
+            // Encabezado de la tabla
+            resultado += '<thead><tr>';
+            resultado += '<th>Alumno/Materia</th>';
+            materias.forEach(materia => {
+                resultado += `<th>${materia}</th>`;
+            });
+            resultado += '<th>Promedio</th>';
+            resultado += '</tr></thead>';
+            
+            resultado += '<tbody>';
+            
+            let todosLosPromedios = [];
+            
+            // Procesar cada alumno
+            alumnos.forEach((alumno, index) => {
+                console.log(`\n--- ${alumno.nombre} ---`);
+                
+                // Fila con el nombre del alumno
+                resultado += `<tr><td class="alumno-nombre" colspan="${materias.length + 2}">${alumno.nombre}</td></tr>`;
+                
+                // Fila con las calificaciones
+                resultado += '<tr>';
+                resultado += '<td class="materias">Calificaciones</td>';
+                
+                let suma = 0;
+                alumno.calificaciones.forEach((nota, i) => {
+                    resultado += `<td>${nota}</td>`;
+                    suma += nota;
+                    console.log(`${materias[i]}: ${nota}`);
+                });
+                
+                let promedio = calcularPromedio(alumno.calificaciones);
+                let clasePromedio = getClasePromedio(parseFloat(promedio));
+                resultado += `<td class="final ${clasePromedio}">${promedio}</td>`;
+                resultado += '</tr>';
+                
+                todosLosPromedios.push(parseFloat(promedio));
+                console.log(`Promedio: ${promedio}`);
+            });
+            
+            resultado += '</tbody>';
+            resultado += '</table>';
+            
+            document.getElementById('resultado').innerHTML = resultado;
+            
+            // Mostrar estadísticas generales
+            mostrarEstadisticas(todosLosPromedios);
+        }
+
+        function mostrarEstadisticas(promedios) {
+            let promedioGeneral = (promedios.reduce((acc, p) => acc + p, 0) / promedios.length).toFixed(2);
+            let mejorPromedio = Math.max(...promedios).toFixed(2);
+            let peorPromedio = Math.min(...promedios).toFixed(2);
+            
+            let estudiantesAprobados = promedios.filter(p => p >= 6).length;
+            let estudiantesReprobados = promedios.filter(p => p < 6).length;
+            
+            let estadisticas = `
+                <div class="estadisticas">
+                    <h3>📊 Estadísticas Generales</h3>
+                    <p><strong>Promedio General del Grupo:</strong> ${promedioGeneral}</p>
+                    <p><strong>Mejor Promedio:</strong> ${mejorPromedio}</p>
+                    <p><strong>Promedio Más Bajo:</strong> ${peorPromedio}</p>
+                    <p><strong>Estudiantes Aprobados:</strong> ${estudiantesAprobados} de ${promedios.length}</p>
+                    <p><strong>Estudiantes Reprobados:</strong> ${estudiantesReprobados} de ${promedios.length}</p>
+                </div>
+            `;
+            
+            document.getElementById('estadisticas').innerHTML = estadisticas;
+            
+            console.log('\n=== ESTADÍSTICAS GENERALES ===');
+            console.log(`Promedio General: ${promedioGeneral}`);
+            console.log(`Mejor Promedio: ${mejorPromedio}`);
+            console.log(`Peor Promedio: ${peorPromedio}`);
+            console.log(`Aprobados: ${estudiantesAprobados}/${promedios.length}`);
+        }
+
+        // Ejecutar el sistema
+        mostrarNotas();
+    </script>
+</body>
+</html>

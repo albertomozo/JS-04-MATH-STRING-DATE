@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String</title>
+    
+
+</head>
+<body>
+    <h1>String</h1>
+    <p>Mira la consola de Javascript</p>
+    <script>
+        const texto1 = "Hola mundo";              // Cadena primitiva
+        const texto2 = 'Otra cadena';
+        const texto3 = `Plantilla con ${texto1}`; // Template literal
+        const texto4 = new String("Objeto String");
+        let frase = "Sumergiendo en tecnología.";
+        console.log(frase.slice(0, 11));   // "Sumergiendo"
+        console.log(frase.includes("tec")); // true
+        console.log(frase.toUpperCase());   // "SUMERGIENDO EN TECNOLOGÍA."
+        console.log(frase.split(" "));      // ["Sumergiendo", "en", "tecnología."]
+
+    </script>
+</body>
+</html>
